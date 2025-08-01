@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CubeSpawner : MonoBehaviour
 {
-    [SerializeField] private Cube _cube;
+    [SerializeField] private Cube _cubePrefab;
 
     public List<Cube> SpawnCubes(float chance, Vector3 position, Vector3 scale)
     {
@@ -16,7 +16,7 @@ public class CubeSpawner : MonoBehaviour
 
         for (int i = 0; i < randomAmmount; i++)
         {
-            Cube newCube = Instantiate(_cube, position, Random.rotation);
+            Cube newCube = Instantiate(_cubePrefab, position, Random.rotation);
             newCube.Initialize(chance / divider, scale / divider, Random.ColorHSV());
             cubes.Add(newCube);
         }

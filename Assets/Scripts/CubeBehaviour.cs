@@ -4,14 +4,24 @@ public class CubeBehaviour : MonoBehaviour
 {
     [SerializeField] private CubeSpawner _spawner;
     [SerializeField] private Exploder _exploder;
-    [SerializeField] private Cube _cube;
+    [SerializeField] private Raycaster _raycaster;
 
-    private void OnMouseUpAsButton()
+    private void OnEnable()
     {
-        if (TryDivide(_cube.Chance))
-            _exploder.SpawnExplode(_spawner.SpawnCubes(_cube.Chance, _cube.transform.position, _cube.transform.localScale), _cube.transform.position);
+        _raycaster.OnCubeHit += InitializeExplosion;
+    }
 
-        Destroy(gameObject);
+    private void OnDisable()
+    {
+        _raycaster.OnCubeHit -= InitializeExplosion;
+    }
+
+    private void InitializeExplosion(Cube cube)
+    {
+        if (TryDivide(cube.Chance))
+            _exploder.SpawnExplode(_spawner.SpawnCubes(cube.Chance, cube.transform.position, cube.transform.localScale), cube.transform.position);
+
+        Destroy(cube.gameObject);
     }
 
     private bool TryDivide(float chance)
@@ -20,9 +30,6 @@ public class CubeBehaviour : MonoBehaviour
         float randomMax = 100;
         float randomChance = Random.Range(randomMin, randomMax);
 
-        if (randomChance <= chance)
-            return true;
-        else
-            return false;
+        return randomChance <= chance;
     }
 }

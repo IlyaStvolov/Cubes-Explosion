@@ -8,9 +8,13 @@ public class Cube : MonoBehaviour
     public Rigidbody Rigidbody { get; private set; }
     public float Chance => _divisionChance;
 
-    public void Initialize(float chance, Vector3 scale, Color color)
+    private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
+    }
+
+    public void Initialize(float chance, Vector3 scale, Color color)
+    {
         _divisionChance = chance;
         transform.localScale = scale;
         GetComponent<Renderer>().material.color = color;
